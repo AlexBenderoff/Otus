@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kuber-dp
+  labels:
+    app: kuber-dp
+spec:
+  replicas: 4
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      env: dev
+  template:
+    metadata:
+      labels:
+        env: dev
+    spec:
+      containers:
+      - name:  laba3-app
+        image: alexrev/laba2:latest
+        ports:
+          - containerPort: 8000
+        args:
+          - liveness
+        livenessProbe:
+          initialDelaySeconds: 40
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+          failureThreshold: 3
+          httpGet:
+            scheme: HTTP
+            path: /actuator/health/liveness
+            port: 8000
+        readinessProbe:
+          initialDelaySeconds: 40
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+          failureThreshold: 3
+          httpGet:
+            scheme: HTTP
+            path: /actuator/health/readiness
+            port: 8000
+
+          
