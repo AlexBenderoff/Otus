@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kuber-dp
+  labels:
+    app: kuber-dp
+spec:
+  replicas: 2
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      env: dev
+  template:
+    metadata:
+      labels:
+        env: dev
+    spec:
+      containers:
+      - name:  crud-app
+        image: alexrev/labacrud
+        env:
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: kuber-myconfig
+              key: POSTGRES_HOST
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: kuber-myconfig
+              key: DB_NAME
+        - name: USER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: kuber-mysecret
+              key: username
+        - name: USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: kuber-mysecret
+              key: password
+        ports:
+          - containerPort: 8080

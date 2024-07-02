@@ -1,0 +1,23 @@
+global:
+  postgresql:
+    auth:
+      username: "postgres"
+      password: "12345678"
+      database: "postgres"
+
+containerPorts:
+  postgresql: 5432
+primary:
+  initdb:
+    ## @param primary.initdb.args PostgreSQL initdb extra arguments
+    ##
+    scripts:
+      init.sql: |
+        CREATE TABLE myusers (id BIGINT not null, email VARCHAR(255),first_name VARCHAR(255), last_name VARCHAR(255), phone VARCHAR(255), username VARCHAR(255), primary key (id));
+        create sequence myusers_seq start with 1 increment by 50;
+## @section PostgreSQL read only replica parameters (only used when `architecture` is set to `replication`)
+##
+readReplicas:
+  ## @param readReplicas.replicaCount Number of PostgreSQL read only replicas
+  ##
+  replicaCount: 1
