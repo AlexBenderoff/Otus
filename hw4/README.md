@@ -4,32 +4,31 @@
 
 ### Подготовка окружения для запуска.
 Запустить minikube
-    ```shell
-    minikube start
-    ```
+```shell
+minikube start
+```
     
 Подключить аддон ingress.
-   ```shell
-   minikube addons enable ingress
-    ```
+```shell
+minikube addons enable ingress
+```
 #### Установка
 1. Склонировать репозиторий в текущую директорию
     ```shell
     git clone https://github.com/AlexBenderoff/Otus.git
     ```
 2. Перейти в папку hw4/manifest/
-    ```shell
-    cd hw4/manifest/
-    ```
-3. Запустить heml
-    Добавить репозиторий
-    ```shell
-    helm repo add bitnami https://charts.bitnami.com/bitnami
-    ```
-    запустить posgtres с параметрами в отдельном yaml файле
-    ```shell
-    helm install my-postgres bitnami/postgresql -f values-postgresql.yaml
-    ```
+   ```shell
+   cd hw4/manifest/
+   ```
+3. Добавить репозиторий heml
+   ```shell
+   helm repo add bitnami https://charts.bitnami.com/bitnami
+   ```
+   запустить posgtres с параметрами в отдельном yaml файле
+   ```shell
+   helm install my-postgres bitnami/postgresql -f values-postgresql.yaml
+   ```
 4. Запустить манифесты
    ```shell
    kubectl apply -f configMap.yaml
